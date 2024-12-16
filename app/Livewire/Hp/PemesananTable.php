@@ -43,7 +43,7 @@ class PemesananTable extends Component
     public function simpan()
     {
 
-        $booking = Booking::where('user_id', auth()->user()->id)->where('tgl_keberangkatan', Session::get('tgl_pemesanan'))->first();
+        $booking = Booking::where('user_id', auth()->user()->id)->where('tgl_keberangkatan', Session::get('tgl_pemesanan'))->where('jadwal_id', Session::get('jadwal_id'))->first();
         if ($booking) {
             session()->flash('error', 'Data Pemesanan sudah ada, jika ingin membatalkan masuk ke menu transaksi.');
             return;

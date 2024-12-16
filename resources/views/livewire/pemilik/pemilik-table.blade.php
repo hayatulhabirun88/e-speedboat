@@ -67,6 +67,17 @@
                                         <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label for="status"><strong>Status</strong> </label>
+                                    <select wire:model="status" class="form-control">
+                                        <option value="">Pilih Status</option>
+                                        <option value="Aktif">Aktif</option>
+                                        <option value="Tidak Aktif">Tidak Aktif</option>
+                                    </select>
+                                    @error('status')
+                                        <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
                             </div>
                         </div>
@@ -102,6 +113,7 @@
                                 <th>Umur</th>
                                 <th>Alamat</th>
                                 <th>Email</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -113,12 +125,13 @@
                                     <td>{{ $pem->umur }}</td>
                                     <td>{{ $pem->alamat }}</td>
                                     <td>{{ $pem->email }}</td>
+                                    <td>{{ $pem->status }}</td>
                                     <td width="200">
                                         <button data-bs-toggle="modal" data-bs-target="#tambahModal"
                                             class="btn btn-warning" wire:click.prevent="edit('{{ $pem->id }}')">
                                             Edit </button>
-                                        <button data-bs-toggle="modal" data-bs-target="#hapusModal-{{ $pem->id }}"
-                                            class="btn btn-danger">
+                                        <button data-bs-toggle="modal"
+                                            data-bs-target="#hapusModal-{{ $pem->id }}" class="btn btn-danger">
                                             Hapus</button>
                                     </td>
                                 </tr>

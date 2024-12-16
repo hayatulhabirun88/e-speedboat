@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class Daftar extends Component
 {
-    public $nama, $umur, $alamat, $email, $password, $level;
+    public $nama, $umur, $alamat, $email, $password, $level, $status;
 
     public function daftar()
     {
         $this->validate([
             'nama' => 'required',
-            'umur' => 'required',
+            'umur' => 'required|numeric',
             'alamat' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
@@ -40,10 +40,15 @@ class Daftar extends Component
             'email' => $this->email,
             'password' => Hash::make($this->password),
             'level' => $this->level,
-            'status' => 'Tidak Aktif',
+            'status' => $this->level == "pemilik" ? "Tidak Aktif" : "Aktif",
         ]);
 
-        session()->flash('success', 'Pendaftaran Sukses, Data anda terlebih dahulum dilakukan pengecekan oleh admin!');
+        if ($this->level == "pemilik") {
+            session()->flash('success', 'Pendaftaran Sukses, Data anda terlebih dahulum dilakukan pengecekan oleh admin!');
+        } else {
+            session()->flash('success', 'Pendaftaran Sukses, silahkan login!');
+        }
+
         // Redirect to the login page
         return redirect()->route('hp.login');
     }

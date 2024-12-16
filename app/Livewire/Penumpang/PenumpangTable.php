@@ -128,7 +128,7 @@ class PenumpangTable extends Component
     }
     public function render()
     {
-        $penumpang = User::where('level', 'penumpang')->paginate(10);
+        $penumpang = User::where('level', 'penumpang')->latest()->paginate(10);
         return view('livewire.penumpang.penumpang-table', compact(['penumpang']));
     }
 }

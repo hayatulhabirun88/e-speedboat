@@ -14,7 +14,7 @@ class PemilikTable extends Component
 
     public $paginationTheme = 'bootstrap';
 
-    public $nama, $umur, $alamat, $email, $password, $level, $selectedId;
+    public $nama, $umur, $alamat, $email, $password, $level, $selectedId, $status;
 
     public $isOpen = false;
 
@@ -33,6 +33,7 @@ class PemilikTable extends Component
         $this->email = '';
         $this->password = '';
         $this->level = 'pemilik';
+        $this->status = '';
     }
 
     public function simpan()
@@ -44,6 +45,7 @@ class PemilikTable extends Component
             'alamat' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $this->selectedId,
             'password' => $this->selectedId ? 'nullable|min:8' : 'required|min:8',
+            'status' => 'required'
         ], [
             // Pesan validasi dalam Bahasa Indonesia
             'nama.required' => 'Nama wajib diisi.',
@@ -65,6 +67,7 @@ class PemilikTable extends Component
 
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal harus 8 karakter.',
+            'status.required' => 'Status wajib diisi.',
         ]);
 
         if ($this->selectedId) {
@@ -73,6 +76,7 @@ class PemilikTable extends Component
             $user->umur = $this->umur;
             $user->alamat = $this->alamat;
             $user->email = $this->email;
+            $user->status = $this->status;
 
             if ($this->password) {
                 $user->password = Hash::make($this->password);
@@ -90,6 +94,7 @@ class PemilikTable extends Component
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
                 'level' => 'pemilik',
+                'status' => $this->status,
             ]);
 
             $this->resetInputFields();
@@ -124,12 +129,13 @@ class PemilikTable extends Component
         $this->umur = $user->umur;
         $this->alamat = $user->alamat;
         $this->email = $user->email;
+        $this->status = $user->status;
 
 
     }
     public function render()
     {
-        $pemilik = User::where('level', 'pemilik')->paginate(10);
+        $pemilik = User::where('level', 'pemilik')->latest()->paginate(10);
         return view('livewire.pemilik.pemilik-table', compact(['pemilik']));
     }
 }
